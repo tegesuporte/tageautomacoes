@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Soluções — Tege Automações</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #090e1a;
+    --surface: #0d1526;
+    --surface2: #111c33;
+    --text: #e8eef8;
+    --muted: #7a90b0;
+    --border: rgba(255,255,255,0.07);
+    --accent: #4a7fd4;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.1rem 3rem;
+    background: rgba(9,14,26,0.92);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.02em; color: var(--text); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+  .logo-dot { width: 10px; height: 10px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 10px var(--accent); animation: blink 2s infinite; flex-shrink: 0; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.35} }
+  nav ul { display: flex; gap: 2rem; list-style: none; align-items: center; }
+  nav ul a { color: var(--muted); text-decoration: none; font-size: 0.88rem; font-weight: 500; transition: color 0.2s; }
+  nav ul a:hover, nav ul a.active { color: var(--text); }
+  .nav-cta { background: transparent !important; color: var(--text) !important; padding: 0.55rem 1.3rem !important; border-radius: 8px; border: 1.5px solid rgba(120,140,180,0.35) !important; font-weight: 700 !important; font-size: 0.83rem !important; }
+  .nav-cta:hover { border-color: rgba(180,200,230,0.6) !important; background: rgba(255,255,255,0.05) !important; }
+
+  /* HERO */
+  .page-hero {
+    padding: 10rem 2rem 5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .page-hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 30px 30px;
+    pointer-events: none;
+  }
+  .hero-glow {
+    position: absolute; width: 700px; height: 400px;
+    background: radial-gradient(ellipse, rgba(74,127,212,0.2) 0%, transparent 65%);
+    top: 30%; left: 50%; transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+  .breadcrumb { position: relative; z-index:1; display: inline-flex; align-items: center; gap: 0.5rem; color: var(--muted); font-size: 0.82rem; margin-bottom: 1.5rem; }
+  .breadcrumb a { color: var(--accent); text-decoration: none; }
+  .breadcrumb span { opacity: 0.4; }
+  .page-tag {
+    position: relative; z-index:1;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(74,127,212,0.1); border: 1px solid rgba(74,127,212,0.3);
+    color: #8ab4e8; font-size: 0.72rem; font-weight: 700; padding: 0.38rem 1rem;
+    border-radius: 100px; margin-bottom: 1.5rem; letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .page-tag::before { content: '●'; color: var(--accent); font-size: 0.45rem; animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.2} }
+  .page-hero h1 {
+    position: relative; z-index: 1;
+    font-family: 'Syne', sans-serif; font-size: clamp(2.8rem, 6vw, 5.5rem);
+    font-weight: 800; line-height: 0.97; letter-spacing: -0.05em;
+    color: #fff; margin-bottom: 1.5rem; max-width: 900px; margin-left: auto; margin-right: auto;
+  }
+  .page-hero p { position: relative; z-index:1; color: var(--muted); font-size: 1.1rem; max-width: 560px; margin: 0 auto; }
+
+  /* FILTER TABS */
+  .filter-section { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 1.5rem 2rem; display: flex; justify-content: center; flex-wrap: wrap; gap: 0.6rem; position: sticky; top: 70px; z-index: 50; }
+  .filter-btn { background: transparent; color: var(--muted); border: 1px solid var(--border); padding: 0.5rem 1.2rem; border-radius: 100px; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 0.82rem; font-weight: 600; transition: all 0.2s; }
+  .filter-btn:hover { color: var(--text); border-color: rgba(74,127,212,0.4); }
+  .filter-btn.active { color: var(--text); background: rgba(74,127,212,0.15); border-color: rgba(74,127,212,0.5); }
+
+  /* SOLUTIONS GRID */
+  .solutions-section { padding: 5rem 2rem; max-width: 1200px; margin: 0 auto; }
+
+  .section-heading { text-align: center; margin-bottom: 4rem; }
+  .section-heading .label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.13em; text-transform: uppercase; color: var(--muted); }
+  .section-heading h2 { font-family: 'Syne', sans-serif; font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 800; letter-spacing: -0.04em; margin-top: 0.5rem; }
+
+  .niche-block { margin-bottom: 7rem; }
+  .niche-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+  .niche-big-icon { width: 70px; height: 70px; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 2rem; flex-shrink: 0; }
+  .niche-header-text h2 { font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 0.3rem; }
+  .niche-header-text p { color: var(--muted); font-size: 0.95rem; }
+
+  .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 1rem; }
+  .feature-card {
+    background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 16px; padding: 1.8rem;
+    transition: border-color 0.25s, background 0.25s, transform 0.25s;
+  }
+  .feature-card:hover { border-color: rgba(74,127,212,0.35); background: rgba(74,127,212,0.04); transform: translateY(-4px); }
+  .feature-card-icon { width: 42px; height: 42px; border-radius: 10px; background: rgba(74,127,212,0.1); border: 1px solid rgba(74,127,212,0.2); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; margin-bottom: 1rem; }
+  .feature-card h4 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; margin-bottom: 0.5rem; }
+  .feature-card p { color: var(--muted); font-size: 0.87rem; line-height: 1.7; }
+  .feature-card .tags { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 1rem; }
+  .feature-card .tag { font-size: 0.67rem; font-weight: 600; padding: 0.25rem 0.6rem; border-radius: 100px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--muted); }
+
+  /* COLORS PER NICHE */
+  .niche-barber .niche-big-icon { background: rgba(168,85,247,0.12); border: 1px solid rgba(168,85,247,0.25); }
+  .niche-barber .niche-header { border-bottom-color: rgba(168,85,247,0.2); }
+  .niche-barber .feature-card:hover { border-color: rgba(168,85,247,0.4); background: rgba(168,85,247,0.04); }
+
+  .niche-ecommerce .niche-big-icon { background: rgba(249,115,22,0.12); border: 1px solid rgba(249,115,22,0.25); }
+  .niche-ecommerce .niche-header { border-bottom-color: rgba(249,115,22,0.2); }
+  .niche-ecommerce .feature-card:hover { border-color: rgba(249,115,22,0.4); background: rgba(249,115,22,0.04); }
+
+  .niche-clinica .niche-big-icon { background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.25); }
+  .niche-clinica .niche-header { border-bottom-color: rgba(16,185,129,0.2); }
+  .niche-clinica .feature-card:hover { border-color: rgba(16,185,129,0.4); background: rgba(16,185,129,0.04); }
+
+  .niche-imovel .niche-big-icon { background: rgba(234,179,8,0.12); border: 1px solid rgba(234,179,8,0.25); }
+  .niche-imovel .niche-header { border-bottom-color: rgba(234,179,8,0.2); }
+  .niche-imovel .feature-card:hover { border-color: rgba(234,179,8,0.4); background: rgba(234,179,8,0.04); }
+
+  .niche-food .niche-big-icon { background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.25); }
+  .niche-food .niche-header { border-bottom-color: rgba(239,68,68,0.2); }
+  .niche-food .feature-card:hover { border-color: rgba(239,68,68,0.4); background: rgba(239,68,68,0.04); }
+
+  .niche-info .niche-big-icon { background: rgba(6,182,212,0.12); border: 1px solid rgba(6,182,212,0.25); }
+  .niche-info .niche-header { border-bottom-color: rgba(6,182,212,0.2); }
+  .niche-info .feature-card:hover { border-color: rgba(6,182,212,0.4); background: rgba(6,182,212,0.04); }
+
+  /* CTA BLOCK */
+  .cta-block {
+    background: var(--surface2); border: 1px solid var(--border); border-radius: 24px;
+    padding: 4rem; text-align: center; margin: 4rem 0; position: relative; overflow: hidden;
+  }
+  .cta-block::before { content: ''; position: absolute; width: 600px; height: 300px; background: radial-gradient(ellipse, rgba(74,127,212,0.12) 0%, transparent 65%); top: 50%; left: 50%; transform: translate(-50%,-50%); pointer-events: none; }
+  .cta-block h3 { position: relative; z-index:1; font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 0.8rem; }
+  .cta-block p { position: relative; z-index:1; color: var(--muted); margin-bottom: 2rem; font-size: 1rem; }
+  .btn-cta { position: relative; z-index:1; background: transparent; color: var(--text); font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: 1rem; padding: 1rem 2.4rem; border: 1.5px solid rgba(150,170,210,0.4); border-radius: 12px; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.2s; }
+  .btn-cta:hover { border-color: rgba(180,200,240,0.7); background: rgba(255,255,255,0.06); transform: translateY(-2px); }
+
+  footer { background: var(--bg); border-top: 1px solid var(--border); padding: 2.5rem 2rem; text-align: center; color: var(--muted); font-size: 0.85rem; }
+  .foot-logo { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 0.75rem; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.1rem; color: var(--text); text-transform: uppercase; }
+  footer a { color: var(--muted); text-decoration: none; margin: 0 0.5rem; }
+  footer a:hover { color: var(--text); }
+
+  .whatsapp-float { position: fixed; bottom: 2rem; right: 2rem; width: 56px; height: 56px; background: #25d366; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 4px 24px rgba(37,211,102,0.4); z-index: 200; text-decoration: none; transition: transform 0.2s; }
+  .whatsapp-float:hover { transform: scale(1.1); } .page-hero { padding: 8rem 1.5rem 4rem; } .solutions-section { padding: 3rem 1.5rem; } .cta-block { padding: 2.5rem 1.5rem; } }
+
+  /* ── HAMBURGER MOBILE ── */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 8px;
+    z-index: 200;
+    flex-shrink: 0;
+  }
+  .hamburger span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: var(--text);
+    border-radius: 2px;
+    transition: transform 0.3s cubic-bezier(0.77,0,0.175,1), opacity 0.3s;
+    transform-origin: center;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .hamburger { display: flex; }
+    nav ul {
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(9,14,26,0.97);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      justify-content: center;
+      align-items: center;
+      gap: 0;
+      padding: 5rem 2rem 3rem;
+      z-index: 150;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    nav ul.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+    nav ul li {
+      width: 100%;
+      text-align: center;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    nav ul li:first-child { border-top: 1px solid rgba(255,255,255,0.06); }
+    nav ul a {
+      display: block;
+      padding: 1.2rem 1rem;
+      font-size: 1.1rem !important;
+      font-weight: 600 !important;
+      color: var(--muted) !important;
+      transition: color 0.2s, background 0.2s;
+    }
+    nav ul a:hover, nav ul a.active { color: var(--text) !important; background: rgba(255,255,255,0.03); }
+    .nav-cta {
+      margin-top: 1rem;
+      border-radius: 12px !important;
+      border: 1.5px solid rgba(74,127,212,0.4) !important;
+      color: var(--accent) !important;
+      font-size: 1rem !important;
+      padding: 0.9rem 2rem !important;
+      background: rgba(74,127,212,0.08) !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo"><div class="logo-dot"></div> Tege Automações</a>
+  <ul id="nav-menu">
+    <li><a href="solucoes.html" class="active">Soluções</a></li>
+    <li><a href="captacao.html">Captação</a></li>
+    <li><a href="como-funciona.html">Como Funciona</a></li>
+    <li><a href="index.html#planos">Planos</a></li>
+    <li><a href="index.html#contato" class="nav-cta">Começar Agora</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Abrir menu" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<section class="page-hero">
+  <div class="hero-glow"></div>
+  <div class="breadcrumb"><a href="index.html">Início</a> <span>/</span> Soluções</div>
+  <div class="page-tag">Soluções por Segmento</div>
+  <h1>Automação feita para<br>o seu mercado</h1>
+  <p>Cada nicho tem suas particularidades. Explore as soluções que desenvolvemos especificamente para o seu tipo de negócio.</p>
+</section>
+
+<div class="filter-section">
+  <button class="filter-btn active" onclick="filterNiche('all', this)">Todos</button>
+  <button class="filter-btn" onclick="filterNiche('niche-barber', this)">✂️ Barbearia</button>
+  <button class="filter-btn" onclick="filterNiche('niche-ecommerce', this)">🛒 E-commerce</button>
+  <button class="filter-btn" onclick="filterNiche('niche-clinica', this)">🏥 Clínicas</button>
+  <button class="filter-btn" onclick="filterNiche('niche-imovel', this)">🏠 Imobiliárias</button>
+  <button class="filter-btn" onclick="filterNiche('niche-food', this)">🍕 Restaurantes</button>
+  <button class="filter-btn" onclick="filterNiche('niche-info', this)">📚 Infoprodutos</button>
+</div>
+
+<div class="solutions-section">
+
+  <!-- BARBEARIA -->
+  <div class="niche-block niche-barber" data-niche="niche-barber" id="barbearia">
+    <div class="niche-header">
+      <div class="niche-big-icon">✂️</div>
+      <div class="niche-header-text">
+        <h2>Barbearia & Salão de Beleza</h2>
+        <p>Automatize agendamentos, reduza faltas e fidelize clientes com inteligência artificial.</p>
+      </div>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-card-icon">📅</div>
+        <h4>Agendamento Automático 24h</h4>
+        <p>Seu cliente agenda pelo WhatsApp a qualquer hora, sem precisar ligar. O sistema confirma, envia lembretes e até reagenda automaticamente.</p>
+        <div class="tags"><span class="tag">WhatsApp Bot</span><span class="tag">Agenda Online</span></div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon">🔔</div>
+        <h4>Lembretes Anti-Falta</h4>
+        <p>Reduza até 70% das ausências com lembretes automáticos enviados 24h e 2h antes do horário marcado, com confirmação em 1 clique.</p>
+        <div class="tags"><span class="tag">Redução de No-show</span><span class="tag">Automação</span></div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon">🎁</div>
+        <h4>Programa de Fidelidade</h4>
+        <p>Sistema automático de pontos e recompensas. O cliente acumula visitas e recebe benefícios automaticamente, sem nenhum trabalho manual.</p>
+        <div class="tags"><span class="tag">Fidelização</span><span class="tag">CRM</span></div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon">📊</div>
+        <h4>Gestão de Clientes (CRM)</h4>
+        <p>Histórico completo de cada cliente: serviços feitos, produtos preferidos, aniversários e frequência de visita. Tudo automaticamente.</p>
+        <div class="tags"><span class="tag">CRM</span><span class="tag">Histórico</span></div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon">📢</div>
+        <h4>Campanhas de Reativação</h4>
+        <p>Identificamos clientes que sumiram e enviamos mensagens personalizadas automáticas para trazê-los de volta com ofertas exclusivas.</p>
+        <div class="tags"><span class="tag">Reativação</span><span class="tag">WhatsApp</span></div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon">⭐</div>
+        <h4>Coleta de Avaliações</h4>
+        <p>Após cada atendimento, o sistema pede automaticamente uma avaliação no Google, aumentando sua reputação online sem esforço.</p>
+        <div class="tags"><span class="tag">Google Reviews</span><span class="tag">Reputação</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- E-COMMERCE -->
+  <div class="niche-block niche-ecommerce" data-niche="niche-ecommerce" id="ecommerce">
+    <div class="niche-header">
+      <div class="niche-big-icon">🛒</div>
+      <div class="niche-header-text">
+        <h2>E-commerce & Varejo</h2>
+        <p>Recupere vendas perdidas, automatize o pós-venda e aumente o ticket médio com IA.</p>
+      </div>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-card-icon">🛒</div>
+        <h4>Recuperação de Carrinho</h4>
+        <p>Sistema inteligente que identifica carrinhos abandonados e envia sequências automáticas por WhatsApp e email para fechar a compra.</p>
+        <div class="tags"><span class="tag">Carrinho Abandonado</span><span class="tag">Conversão</span></div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon">📦</div>
+        <h4>Status de Pedidos Automático</h4>
+        <p>Notificações em tempo real: confirmação, separação, envio e entrega — tudo pelo WhatsApp, sem sobrecarregar seu SAC.</p>
+        <div class="tags"><span class="tag">Rastreamento</span><span class="tag">WhatsApp</span></div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon">💰</div>
+        <h4>Upsell & Cross-sell Inteligente</h4>
+        <p>Sugestões personalizadas baseadas no histórico de compra de cada cliente, enviadas no momento certo para aumentar o ticket médio.</p>
+        <div class="tags"><span class="tag">Upsell</span><span class="tag">IA</span></div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon">🔁</div>
+        <h4>Pós-venda Automatizado</h4>
+        <p>Sequência de mensagens após a compra: instruções de uso, pesquisa de satisfação, pedido de avaliação e oferta de recompra.</p>
+        <div class="tags"><span class="tag">Pós-venda</span><span class="tag">NPS</span></div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon">🎯</div>
+        <h4>Segmentação de Clientes</h4>
+        <p>Divida sua base por comportamento de compra e envie campanhas hiper-personalizadas com taxas de abertura 3× maiores.</p>
+        <div class="tags"><span class="tag">Segmentação</span><span class="tag">Email</span></div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon">🤖</div>
+        <h4>Atendimento Automático</h4>
+        <p>Bot com IA que responde dúvidas sobre produtos, prazos, trocas e devoluções automaticamente, 24 horas por dia.</p>
+        <div class="tags"><span class="tag">IA</span><span class="tag">SAC</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLÍNICAS -->
+  <div class="niche-block niche-clinica" data-niche="niche-clinica" id="clinicas">
+    <div class="niche-header">
+      <div class="niche-big-icon">🏥</div>
+      <div class="niche-header-text">
+        <h2>Clínicas & Saúde</h2>
+        <p>Agendamento 24h, triagem inteligente e gestão de pacientes totalmente automatizados.</p>
+      </div>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-card-icon">📅</div>
+        <h4>Agendamento de Consultas 24h</h4>
+        <p>Pacientes agendam pelo WhatsApp a qualquer hora. O sistema verifica disponibilidade, confirma e envia todas as informações necessárias.</p>
+        <div class="tags"><span class="tag">Agendamento</span><span class="tag">WhatsApp</span></div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon">🩺</div>
+        <h4>Triagem Inteligente por IA</h4>
+        <p>Chatbot qualifica o paciente antes da consulta: coleta sintomas, histórico e urgência para direcionar ao profissional mais adequado.</p>
+        <div class="tags"><span class="tag">IA</span><span class="tag">Triagem</span></div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon">📋</div>
+        <h4>Envio de Documentos Pré-consulta</h4>
+        <p>Formulários de anamnese, termos e preparativos são enviados automaticamente antes da consulta, agilizando o atendimento presencial.</p>
+        <div class="tags"><span class="tag">Documentos</span><span class="tag">Onboarding</span></div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon">🔔</div>
+        <h4>Lembretes de Consulta & Retorno</h4>
+        <p>Lembretes automáticos antes da consulta e, após o atendimento, avisos de retorno e acompanhamento para manter o paciente ativo.</p>
+        <div class="tags"><span class="tag">Retenção</span><span class="tag">Lembretes</span></div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon">💊</div>
+        <h4>Lembretes de Medicamentos</h4>
+        <p>Sistema opcional que envia lembretes de medicamentos prescritos para pacientes, melhorando adesão ao tratamento.</p>
+        <div class="tags"><span class="tag">Adesão</span><span class="tag">Cuidado</span></div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon">📊</div>
+        <h4>Dashboard de Ocupação</h4>
+        <p>Visualize em tempo real a taxa de ocupação, faltas, receita por especialidade e evolução mensal da clínica.</p>
+        <div class="tags"><span class="tag">Dashboard</span><span class="tag">Relatórios</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- IMOBILIÁRIAS -->
+  <div class="niche-block niche-imovel" data-niche="niche-imovel" id="imobiliarias">
+    <div class="niche-header">
+      <div class="niche-big-icon">🏠</div>
+      <div class="niche-header-text">
+        <h2>Imobiliárias & Corretores</h2>
+        <p>Qualifique leads, envie portfólios e feche mais negócios com automação inteligente.</p>
+      </div>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-card-icon">🎯</div>
+        <h4>Qualificação Automática de Leads</h4>
+        <p>Bot que pergunta perfil, orçamento, localização e tipo de imóvel desejado, entregando leads já qualificados para sua equipe de vendas.</p>
+        <div class="tags"><span class="tag">Qualificação</span><span class="tag">IA</span></div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon">🏡</div>
+        <h4>Envio de Portfólio Personalizado</h4>
+        <p>Com base no perfil do lead, o sistema seleciona e envia automaticamente os imóveis mais relevantes com fotos, vídeos e valores.</p>
+        <div class="tags"><span class="tag">Portfólio</span><span class="tag">Personalização</span></div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon">🔁</div>
+        <h4>Follow-up Inteligente</h4>
+        <p>Sequências automáticas que mantêm o lead aquecido com novidades do mercado, novos imóveis e conteúdos relevantes até fechar negócio.</p>
+        <div class="tags"><span class="tag">Follow-up</span><span class="tag">Nutrição</span></div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon">📅</div>
+        <h4>Agenda de Visitas Automática</h4>
+        <p>Lead interessado? O sistema já propõe horários de visita disponíveis e confirma tudo automaticamente, sem esforço do corretor.</p>
+        <div class="tags"><span class="tag">Agendamento</span><span class="tag">Visitas</span></div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon">📈</div>
+        <h4>CRM de Oportunidades</h4>
+        <p>Pipeline visual com todas as oportunidades em cada etapa: prospecção, visita, proposta e fechamento — atualizado automaticamente.</p>
+        <div class="tags"><span class="tag">CRM</span><span class="tag">Pipeline</span></div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon">📣</div>
+        <h4>Alerta de Novos Imóveis</h4>
+        <p>Quando entra um imóvel que combina com o perfil de um lead em espera, ele é notificado automaticamente — você não perde o timing.</p>
+        <div class="tags"><span class="tag">Alertas</span><span class="tag">WhatsApp</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESTAURANTES -->
+  <div class="niche-block niche-food" data-niche="niche-food" id="restaurantes">
+    <div class="niche-header">
+      <div class="niche-big-icon">🍕</div>
+      <div class="niche-header-text">
+        <h2>Restaurantes & Food Service</h2>
+        <p>Cardápio digital, pedidos automatizados e programa de fidelidade no WhatsApp.</p>
+      </div>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-card-icon">📱</div>
+        <h4>Cardápio Interativo no WhatsApp</h4>
+        <p>Clientes navegam pelo cardápio, fazem pedidos e pagam direto pelo WhatsApp — sem app, sem link externo, sem fricção.</p>
+        <div class="tags"><span class="tag">Cardápio Digital</span><span class="tag">WhatsApp</span></div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon">🚀</div>
+        <h4>Pedidos Automatizados</h4>
+        <p>O pedido vai direto para a cozinha com confirmação automática para o cliente, tempo estimado de entrega e notificação quando sair.</p>
+        <div class="tags"><span class="tag">Pedidos</span><span class="tag">Delivery</span></div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon">⭐</div>
+        <h4>Programa de Pontos & Fidelidade</h4>
+        <p>Cada pedido acumula pontos automaticamente. O cliente recebe avisos de saldo e resgata recompensas sem nenhum esforço manual seu.</p>
+        <div class="tags"><span class="tag">Fidelização</span><span class="tag">Gamificação</span></div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon">📅</div>
+        <h4>Reservas Automáticas</h4>
+        <p>Sistema de reservas de mesas com confirmação automática, lembrete no dia e lista de espera gerenciada por IA.</p>
+        <div class="tags"><span class="tag">Reservas</span><span class="tag">Gestão</span></div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon">🎂</div>
+        <h4>Marketing de Datas Especiais</h4>
+        <p>O sistema lembra aniversários dos clientes e envia automaticamente cupons e ofertas exclusivas para trazer de volta na data certa.</p>
+        <div class="tags"><span class="tag">Aniversários</span><span class="tag">Cupons</span></div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon">📊</div>
+        <h4>Relatório de Vendas em Tempo Real</h4>
+        <p>Acompanhe pratos mais pedidos, ticket médio, horários de pico e faturamento — no celular, em tempo real.</p>
+        <div class="tags"><span class="tag">Analytics</span><span class="tag">Dashboard</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INFOPRODUTOS -->
+  <div class="niche-block niche-info" data-niche="niche-info" id="infoprodutos">
+    <div class="niche-header">
+      <div class="niche-big-icon">📚</div>
+      <div class="niche-header-text">
+        <h2>Infoprodutores & Criadores de Cursos</h2>
+        <p>Funis de vendas, nutrição de leads e onboarding de alunos totalmente automatizados.</p>
+      </div>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-card-icon">🎯</div>
+        <h4>Captação de Leads Segmentada</h4>
+        <p>Landing pages de alta conversão com formulários inteligentes que identificam o perfil do lead e o direcionam para a trilha certa.</p>
+        <div class="tags"><span class="tag">Landing Page</span><span class="tag">Conversão</span></div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon">📧</div>
+        <h4>Funil de Email + WhatsApp</h4>
+        <p>Sequências automáticas multicanal que educam, engajam e convertem o lead no ritmo certo — do conteúdo gratuito até a oferta.</p>
+        <div class="tags"><span class="tag">Funil</span><span class="tag">Email</span><span class="tag">WhatsApp</span></div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon">🎓</div>
+        <h4>Onboarding de Alunos</h4>
+        <p>Sequência automática de boas-vindas, acesso à plataforma, guia de início e agendamento de mentorias — sem trabalho manual.</p>
+        <div class="tags"><span class="tag">Onboarding</span><span class="tag">Alunos</span></div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon">🔁</div>
+        <h4>Reativação de Inativos</h4>
+        <p>Identifica alunos ou leads inativos e envia campanhas de reengajamento personalizadas para trazer de volta ao curso ou à compra.</p>
+        <div class="tags"><span class="tag">Retenção</span><span class="tag">Reativação</span></div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon">🚀</div>
+        <h4>Automação de Lançamentos</h4>
+        <p>Sequência completa de lançamento: pré-aquecimento, CPL, abertura do carrinho, recuperação e pós-venda — tudo no piloto automático.</p>
+        <div class="tags"><span class="tag">Lançamento</span><span class="tag">PLF</span></div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon">📊</div>
+        <h4>Métricas de Engajamento</h4>
+        <p>Veja em tempo real: taxa de abertura, cliques, conversão por etapa do funil e LTV de cada aluno. Dados para decisões certas.</p>
+        <div class="tags"><span class="tag">Analytics</span><span class="tag">LTV</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-block">
+    <h3>Qual é o seu nicho?</h3>
+    <p>Fale com a gente e receba uma proposta personalizada para o seu tipo de negócio, gratuitamente.</p>
+    <a href="index.html#contato" class="btn-cta">Quero minha automação gratuita →</a>
+  </div>
+
+</div>
+
+<footer>
+  <div class="foot-logo"><div class="logo-dot"></div> Tege Automações</div>
+  <p style="margin-bottom:0.6rem">© 2025 Tege Automações. Todos os direitos reservados.</p>
+  <p><a href="#">Política de Privacidade</a> · <a href="#">Termos de Uso</a></p>
+</footer>
+
+<a href="https://wa.me/5511999999999" class="whatsapp-float" target="_blank">💬</a>
+
+<script>
+function filterNiche(niche, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const blocks = document.querySelectorAll('.niche-block');
+  blocks.forEach(block => {
+    if (niche === 'all' || block.dataset.niche === niche) {
+      block.style.display = '';
+      block.style.opacity = '0';
+      block.style.transform = 'translateY(20px)';
+      setTimeout(() => { block.style.transition = 'opacity 0.4s, transform 0.4s'; block.style.opacity = '1'; block.style.transform = 'translateY(0)'; }, 20);
+    } else {
+      block.style.display = 'none';
+    }
+  });
+}
+</script>
+
+<script>
+function toggleMenu() {
+  const menu = document.getElementById('nav-menu');
+  const btn = document.getElementById('hamburger');
+  menu.classList.toggle('open');
+  btn.classList.toggle('open');
+  document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+}
+// Close menu when a link is clicked
+document.querySelectorAll('#nav-menu a').forEach(function(link) {
+  link.addEventListener('click', function() {
+    document.getElementById('nav-menu').classList.remove('open');
+    document.getElementById('hamburger').classList.remove('open');
+    document.body.style.overflow = '';
+  });
+});
+</script>
+
+</body>
+</html>
